@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char nonTerminal, alpha[10], beta[10];
+    printf("Enter production (A->Aa|b format): ");
+    scanf("%c->%[^|]|%s", &nonTerminal, alpha, beta);
+
+    printf("\nOriginal Production: %c->%s|%s", nonTerminal, alpha, beta);
+    printf("\nAfter Eliminating Left Recursion:\n");
+    printf("%c->%s%c'\n", nonTerminal, beta, nonTerminal);
+    printf("%c'->%s%c'|ε\n", nonTerminal, alpha, nonTerminal);
+
+    return 0;
+}
