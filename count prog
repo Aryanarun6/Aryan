@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>   // ✅ Added for strcmp
+
+int main() {
+    char c;
+    int chars = 0, words = 0, lines = 0;
+    int inWord = 0;
+
+    printf("Enter text (end with END on a line):\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == 'E') { // check for END
+            char buf[4];
+            buf[0] = c;
+            for (int i = 1; i < 3; i++) buf[i] = getchar();
+            buf[3] = '\0';
+            if (strcmp(buf, "END") == 0) break;
+            else {
+                chars += 3;
+                continue;
+            }
+        }
+        chars++;
+        if (c == '\n') {
+            lines++;
+            inWord = 0;
+        } else if (isspace(c)) {
+            inWord = 0;
+        } else if (!inWord) {
+            inWord = 1;
+            words++;
+        }
+    }
+
+    printf("\nCharacters: %d\nWords: %d\nLines: %d\n", chars, words, lines);
+    return 0;
+}
