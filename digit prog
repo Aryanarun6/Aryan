@@ -1,0 +1,17 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+[0-9]       { printf("Digit: %s\n", yytext); }
+.           { printf("Not a digit: %s\n", yytext); }
+\n          ;  /* ignore newline */
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    printf("Enter input (Ctrl+D to end input on Linux/Mac, Ctrl+Z on Windows):\n");
+    yylex();
+    return 0;
+}
