@@ -1,0 +1,26 @@
+%{
+#include <stdio.h>
+
+int positive_count = 0;
+int negative_count = 0;
+%}
+
+%%
+-?[0-9]+      {
+                if (yytext[0] == '-') 
+                    negative_count++;
+                else
+                    positive_count++;
+              }
+.|\n           ;  /* ignore everything else */
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    printf("Enter numbers (Ctrl+D to end input on Linux/Mac, Ctrl+Z on Windows):\n");
+    yylex();
+    printf("\nPositive numbers: %d\n", positive_count);
+    printf("Negative numbers: %d\n", negative_count);
+    return 0;
+}
