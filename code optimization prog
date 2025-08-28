@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char expr[20];
+    char temp[5];
+} Entry;
+
+int main() {
+    int n;
+    printf("Enter number of expressions: ");
+    scanf("%d", &n);
+    Entry table[20];
+    int count = 0;
+    char lhs[10], rhs[20];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter expression (format: x=a+b): ");
+        scanf("%s", rhs);
+        sscanf(rhs, "%[^=]=%s", lhs, rhs);
+
+        int found = 0;
+        for (int j = 0; j < count; j++) {
+            if (strcmp(table[j].expr, rhs) == 0) {
+                printf("%s = %s\n", lhs, table[j].temp);
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            sprintf(table[count].temp, "t%d", count + 1);
+            strcpy(table[count].expr, rhs);
+            printf("%s = %s\n", lhs, rhs);
+            strcpy(lhs, table[count].temp);
+            printf("%s = %s\n", table[count].temp, rhs);
+            count++;
+        }
+    }
+    return 0;
+}
