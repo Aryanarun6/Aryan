@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LINE 1000
+
+int main() {
+    char line[MAX_LINE];
+    printf("Enter an arithmetic expression (type 'END' to finish):\n");
+
+    while (1) {
+        fgets(line, sizeof(line), stdin);
+
+        // Stop input if user types END
+        if (strncmp(line, "END", 3) == 0)
+            break;
+
+        for (int i = 0; i < strlen(line); i++) {
+            if (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/') {
+                printf("Operator found: %c\n", line[i]);
+            }
+        }
+    }
+
+    return 0;
+}
