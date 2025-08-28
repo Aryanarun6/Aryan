@@ -1,0 +1,16 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+^[aeiouAEIOU][a-zA-Z0-9]*$   { printf("Accepted: %s\n", yytext); }
+.*                            { printf("Rejected: %s\n", yytext); }
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    printf("Enter strings (Ctrl+D to end input on Linux/Mac, Ctrl+Z on Windows):\n");
+    yylex();
+    return 0;
+}
