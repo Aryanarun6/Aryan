@@ -1,0 +1,35 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int num1, num2;
+char op;
+%}
+
+%%
+[0-9]+        {
+                if (!num1) num1 = atoi(yytext);
+                else num2 = atoi(yytext);
+              }
+[\+\-\*/]     { op = yytext[0]; }
+\n            { 
+                if (op == '+') printf("%d + %d = %d\n", num1, num2, num1 + num2);
+                else if (op == '-') printf("%d - %d = %d\n", num1, num2, num1 - num2);
+                else if (op == '*') printf("%d * %d = %d\n", num1, num2, num1 * num2);
+                else if (op == '/') {
+                    if (num2 != 0) printf("%d / %d = %d\n", num1, num2, num1 / num2);
+                    else printf("Error: Division by zero\n");
+                }
+                num1 = num2 = op = 0;  // reset for next calculation
+              }
+[ \t]+        ;  // ignore spaces and tabs
+.             { /* ignore any other character */ }
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    printf("Enter calculation (e.g., 3 + 5) and press ENTER:\n");
+    yylex();
+    return 0;
+}
