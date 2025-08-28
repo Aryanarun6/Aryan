@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char name[5];
+} Operand;
+
+Operand stack[100];
+int top = -1;
+int tempVar = 0;
+
+char* newTemp() {
+    static char temp[5];
+    sprintf(temp, "t%d", tempVar++);
+    return temp;
+}
+
+void push(char *op) {
+    strcpy(stack[++top].name, op);
+}
+
+char* pop() {
+    return stack[top--].name;
+}
+
+void generateAssembly(char *expr) {
+    int i;
+    printf("Generated Assembly:\n");
+
+    for (i = 0; expr[i] != '\0'; i++) {
+        if (expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/') {
+            char *op2 = pop();
+            char *op1 = pop();
+            char *res = newTemp();
+
+            printf("MOV R0, %s\n", op1);
+            switch(expr[i]) {
+                case '+': printf("ADD R0, %s\n", op2); break;
+                case '-': printf("SUB R0, %s\n", op2); break;
+                case '*': printf("MUL R0, %s\n", op2); break;
+                case '/': printf("DIV R0, %s\n", op2); break;
+            }
+            printf("MOV %s, R0\n", res);
+            push(res);
+        } else if(expr[i] != ' ') {
+            char op[2] = {expr[i], '\0'};
+            push(op);
+        }
+    }
+}
+
+int main() {
+    char expr[100];
+    printf("Enter expression in postfix form (e.g., abc*+ for a+b*c): ");
+    scanf("%s", expr);
+
+    generateAssembly(expr);
+
+    return 0;
+}
