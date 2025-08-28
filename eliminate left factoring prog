@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char nonTerminal, common[10], alpha[10], beta[10];
+    printf("Enter production (A->ab|ac format): ");
+    scanf("%c->%[^|]|%s", &nonTerminal, alpha, beta);
+
+    int i = 0, j = 0;
+    while (alpha[i] && beta[i] && alpha[i] == beta[i]) {
+        common[j++] = alpha[i];
+        i++;
+    }
+    common[j] = '\0';
+
+    printf("\nOriginal Production: %c->%s|%s", nonTerminal, alpha, beta);
+    printf("\nAfter Eliminating Left Factoring:\n");
+    printf("%c->%s%c'\n", nonTerminal, common, nonTerminal);
+    printf("%c'->%s|%s\n", nonTerminal, &alpha[i], &beta[i]);
+
+    return 0;
+}
