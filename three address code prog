@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int tempCount = 1;
+
+void generateTAC(char expr[]) {
+    char stack[100][10];
+    int top = -1;
+    char temp[5];
+    for (int i = 0; expr[i]; i++) {
+        if (isalnum(expr[i])) {  // operand
+            char s[2] = {expr[i], '\0'};
+            strcpy(stack[++top], s);
+        } else if (strchr("+-*/", expr[i])) { // operator
+            char op2[10], op1[10];
+            strcpy(op2, stack[top--]);
+            strcpy(op1, stack[top--]);
+            sprintf(temp, "t%d", tempCount++);
+            printf("%s = %s %c %s\n", temp, op1, expr[i], op2);
+            strcpy(stack[++top], temp);
+        }
+    }
+    printf("Result stored in %s\n", stack[top]);
+}
+
+int main() {
+    char expr[100];
+    printf("Enter postfix expression (e.g. ab+c*): ");
+    scanf("%s", expr);
+    printf("Three Address Code:\n");
+    generateTAC(expr);
+    return 0;
+}
