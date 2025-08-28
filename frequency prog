@@ -1,0 +1,29 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+char target[50];      // word to search
+int count = 0;
+%}
+
+%%
+[a-zA-Z0-9_]+ {
+    if (strcmp(yytext, target) == 0)
+        count++;
+}
+.|\n     ;  /* ignore everything else */
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    printf("Enter the word to search: ");
+    scanf("%s", target);
+    getchar();  // consume newline
+
+    printf("Enter the sentence (end with ENTER):\n");
+    yylex();    // process input
+
+    printf("\nThe word '%s' occurred %d times.\n", target, count);
+    return 0;
+}
